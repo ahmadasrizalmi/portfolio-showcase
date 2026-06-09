@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #F2F2F7; --card: #FFFFFF; --text: #1D1D1F; --text-muted: #86868B;
+      --primary: #007AFF; --green: #34C759; --orange: #FF9500; --red: #FF3B30;
+      --input-bg: rgba(118, 118, 128, 0.12); --divider: #E5E5EA;
+      --radius: 12px; --radius-lg: 16px;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+      background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased;
+      font-size: 14px; min-height: 100vh;
+    }
+    .header {
+      background: rgba(255,255,255,0.85); backdrop-filter: blur(20px);
+      padding: 12px 16px; border-bottom: 0.5px solid var(--divider);
+      position: sticky; top: 0; z-index: 20;
+    }
+    .header-top { display: flex; align-items: center; justify-content: space-between; }
+    .header-title { font-size: 20px; font-weight: 700; }
+    .content { padding: 16px; overflow-y: auto; }
+    
+    .btn-icon {
+      width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+      background: var(--input-bg); border: none; border-radius: 10px; cursor: pointer;
+      color: var(--text-muted); transition: all 0.15s;
+    }
+    .btn-icon:hover { background: rgba(118, 118, 128, 0.2); }
+    .btn-icon svg { width: 18px; height: 18px; }
+    
+    .btn-primary {
+      width: 100%; padding: 14px; background: var(--primary); color: white; border: none;
+      border-radius: var(--radius); font-size: 16px; font-weight: 600; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s;
+    }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-primary svg { width: 18px; height: 18px; }
+    
+    .btn-sm {
+      padding: 6px 12px; font-size: 12px; font-weight: 600; border: none; border-radius: 8px;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .btn-outline { background: none; color: var(--primary); border: 1px solid var(--primary); }
+    .btn-green { background: var(--green); color: white; }
+    .btn-danger { background: none; color: var(--red); border: 1px solid var(--red); }
+    
+    /* Portfolio Cards */
+    .portfolio-card {
+      background: var(--card); border-radius: var(--radius-lg); padding: 16px;
+      border: 1px solid var(--divider); margin-bottom: 12px; cursor: pointer;
+      transition: all 0.15s;
+    }
+    .portfolio-card:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    
+    .portfolio-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .portfolio-title { font-size: 17px; font-weight: 700; }
+    .portfolio-count {
+      padding: 4px 10px; background: var(--input-bg); border-radius: 8px;
+      font-size: 12px; font-weight: 600; color: var(--text-muted);
+    }
+    .portfolio-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 8px; line-height: 1.4; }
+    .portfolio-meta { font-size: 12px; color: var(--text-muted); }
+    
+    .portfolio-actions { display: flex; gap: 8px; margin-top: 12px; }
+    
+    /* Photo Grid */
+    .photo-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0;
+    }
+    .photo-thumb {
+      aspect-ratio: 1; border-radius: 8px; overflow: hidden; position: relative;
+    }
+    .photo-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .photo-remove {
+      position: absolute; top: 4px; right: 4px; width: 24px; height: 24px;
+      background: rgba(0,0,0,0.6); border: none; border-radius: 50%; color: white;
+      font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+    
+    /* Drop Zone */
+    .drop-zone {
+      border: 2px dashed var(--divider); border-radius: var(--radius-lg); padding: 32px 16px;
+      text-align: center; cursor: pointer; transition: all 0.2s; margin-bottom: 16px;
+    }
+    .drop-zone:hover, .drop-zone.dragover { border-color: var(--primary); background: rgba(0, 122, 255, 0.05); }
+    .drop-zone svg { width: 40px; height: 40px; color: var(--text-muted); margin-bottom: 8px; }
+    .drop-zone-text { font-size: 14px; color: var(--text-muted); }
+    
+    /* Form */
+    .form-group { margin-bottom: 14px; }
+    .form-label {
+      display: block; font-size: 12px; font-weight: 600; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;
+    }
+    .form-input, .form-textarea {
+      width: 100%; padding: 10px 14px; background: var(--input-bg); border: 2px solid transparent;
+      border-radius: 10px; font-size: 14px; color: var(--text); outline: none; font-family: inherit;
+    }
+    .form-input:focus, .form-textarea:focus { border-color: rgba(0, 122, 255, 0.3); background: white; }
+    .form-textarea { min-height: 80px; resize: vertical; }
+    
+    /* Empty State */
+    .empty-state { text-align: center; padding: 40px 20px; color: var(--text-muted); }
+    .empty-state svg { width: 48px; height: 48px; margin-bottom: 12px; opacity: 0.3; }
+    
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+      background: var(--text); color: white; padding: 10px 20px; border-radius: 24px;
+      font-size: 14px; font-weight: 500; opacity: 0;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); z-index: 60; pointer-events: none;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--divider); border-radius: 2px; }
+  </style>
+</head>
+<body>
+  
+  <div class="header">
+    <div class="header-top">
+      <h1 class="header-title">Portfolio Showcase</h1>
+    </div>
+  </div>
+  
+  <div class="content">
+    
+    <!-- Portfolio List View -->
+    <div id="view-list">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <span style="font-size:15px; font-weight:600;" id="portfolio-count">0 Portfolios</span>
+        <button class="btn-sm btn-outline" id="btn-new">+ Baru</button>
+      </div>
+      
+      <div id="portfolio-list">
+        <div class="empty-state">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+          <div>Belum ada portfolio. Klik "+ Baru" untuk mulai.</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Edit View -->
+    <div id="view-edit" style="display:none">
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:16px;">
+        <button class="btn-icon" id="btn-back">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <h2 style="font-size:18px; font-weight:700;">Edit Portfolio</h2>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Judul Portfolio</label>
+        <input type="text" class="form-input" id="edit-title" placeholder="Villa Anggrek - Interior Photography">
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Deskripsi</label>
+        <textarea class="form-textarea" id="edit-desc" placeholder="Foto interior villa premium di Yogyakarta"></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Brand Name</label>
+        <input type="text" class="form-input" id="edit-brand" value="Ahmad Asri Photography">
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Foto (${'<span id="photo-count">0</span>'} foto)</label>
+        
+        <div class="photo-grid" id="photo-grid"></div>
+        
+        <div class="drop-zone" id="drop-zone">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+          <div class="drop-zone-text">Drag & drop foto atau klik untuk pilih</div>
+          <input type="file" id="photo-input" accept="image/*" multiple style="display:none">
+        </div>
+      </div>
+      
+      <div style="display:flex; gap:8px;">
+        <button class="btn-primary" id="btn-save" style="flex:1">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>
+          Simpan
+        </button>
+        <button class="btn-primary" id="btn-export-html" style="flex:1; background:var(--green);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export HTML
+        </button>
+      </div>
+      
+      <button class="btn-sm btn-danger" id="btn-delete" style="width:100%; margin-top:12px; padding:10px;">
+        Hapus Portfolio
+      </button>
+    </div>
+  </div>
+  
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+  
+  <script src="sidepanel.js"></script>
+</body>
+</html>
