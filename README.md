@@ -1,6 +1,6 @@
 # Portfolio Showcase Chrome Extension
 
-Create beautiful portfolio galleries from your photos. Generate shareable HTML pages.
+Portfolio showcase Chrome Extension — create beautiful portfolio galleries from your photos and generate shareable HTML pages.
 
 ## Features
 
