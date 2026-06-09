@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Portfolio Showcase",
+  "name": "Portfolio Showcase Chrome Extension",
   "version": "1.0",
   "description": "Create beautiful portfolio galleries from your photos. Generate shareable HTML pages.",
   "permissions": [
